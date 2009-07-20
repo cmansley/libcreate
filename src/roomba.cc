@@ -1,8 +1,4 @@
 #include <iostream>
-#include <termios.h>
-#include <sys/ioctl.h>
-#include <fcntl.h>
-#include <cstring>
 
 #include "roomba.hh"
 #include "roombaException.hh"
@@ -13,12 +9,9 @@ namespace RoombaDriver {
   /*!
    *
    */
-  Roomba::Roomba(const std::string path): _roombaPath(path),
-					  _roombaFD(0),
+  Roomba::Roomba(const std::string path): _roombaPath(path),					  
 					  _roombaInitialized(false)
-					  
   {
-    memset(&_oldTerm,0,sizeof(struct termios));
   }
 
   /*!
@@ -84,12 +77,13 @@ namespace RoombaDriver {
       
     /* Handle I/O exception */
     catch(RoombaIOException &e) {
-    
+      std::cerr << e.what() << std::endl;
+      throw;
     }
 
     /* Handle unknown exceptions */
     catch(...) {
-      std::cerr << "Roomba::_setupConnection: Unknown exception" << std::endl;
+      std::cerr << "Roomba::Uninitialize: Unknown exception" << std::endl;
       // throw; // throw ????
     }
 
@@ -106,17 +100,10 @@ namespace RoombaDriver {
     try {
 
       /* Open the device */
-      if((_roombaFD = open(_roombaPath.c_str(), O_RDWR | O_NOCTTY)) < 0) {
-	throw RoombaIOException("Roomba::_setupConnection: Unable to open serial port");
-      }
-
-      /* Backup original term settings */
-      if(tcgetattr(_roombaFD, &_oldTerm) < 0) {
-	throw RoombaIOException("Roomba::_setupConnection: tcgetattr() failed");
-      }
+      _serial.Open(_roombaPath);
 
       /* Set serial baud rate */
-      _setSerialBaud();
+      _serial.SetBaud(Serial::BAUD_56K);
       
     } // try
 
@@ -144,62 +131,9 @@ namespace RoombaDriver {
     if (_roombaInitialized == false) {
       return;
     }
-    
-    /* Restore serial settings */
-    if (tcsetattr(_roombaFD, TCSANOW, &_oldTerm) < 0) {
-      throw RoombaIOException("Roomba::_teardownConnection: tcsetattr() failed");      
-    }
 
-    /* Close file descriptor */
-    if(close(_roombaFD) != 0) {
-      throw RoombaIOException("Roomba::_teardownConnection: close() failed");
-    }
-
-  }
-
-  /*!
-   *
-   */
-  void Roomba::_setSerialBaud() throw( RoombaIOException ) {
-
-    struct termios term;
-    
-    try {
-      /* Get current serial settings */
-      if(tcgetattr(_roombaFD, &term) < 0) {
-	throw RoombaIOException("Roomba::_setSerialBaud: tcgetattr() failed");
-      }
-      
-      /* Set baud rate */
-      cfmakeraw(&term);
-      cfsetispeed(&term,B57600);
-      cfsetospeed(&term,B57600);
-      
-      // thread safety 
-      
-      /* Set the serial settings */
-      if(tcsetattr(_roombaFD, TCSAFLUSH, &term) < 0 ) {
-	throw RoombaIOException("Roomba::_setSerialBaud: tcsetattr() failed");
-      }
-
-      // thread safety
-
-      _flushSerialBuffer();
-      
-    } // try
-    
-    
-    /* Catch I/O exception */
-    catch(RoombaIOException &e) {
-      std::cerr << e.what() << std::endl;
-      throw;
-    }
-    
-    /* Catch unknown exceptions */
-    catch(...) {
-      std::cerr << "Roomba::_setSerialBaud: Unknown Exception" << std::endl;
-      // throw; // throw ????
-    }
+    /* Close serial port */
+    _serial.Close();
   }
 
   /*!
@@ -208,16 +142,10 @@ namespace RoombaDriver {
   void Roomba::_flushSerialBuffer() throw( RoombaIOException ) {
     
     try {
-
-      // thread safety
-
-      /* Flush the serial port */
-      if (tcflush(_roombaFD, TCIOFLUSH) != 0) {
-	throw RoombaIOException("Roomba::_flushSerialBuffer: tcflush() failed");
-      }
-
-      // thread safety 
       
+      /* Flush buffer */
+      _serial.Flush();
+
     } // try
     
     /* Catch I/O exceptions */
@@ -241,12 +169,12 @@ namespace RoombaDriver {
 
     /* Start byte*/
     unsigned char message = 128; 
-    
-    if ((unsigned int)write(_roombaFD, &message, 1) != 1) {      
-      throw RoombaIOException("Roomba::_setRoombaStart: write() failed");
-    }
+
+    /* Write message */
+    _serial.Write(&message, 1);
 
     /* Recommended sleep time */
+    // _sleep(20)
     usleep(20000);
   }
 
@@ -258,12 +186,12 @@ namespace RoombaDriver {
     /* Start byte*/
     unsigned char message = 132; 
     
-    if ((unsigned int)write(_roombaFD, &message, 1) != 1) {      
-      throw RoombaIOException("Roomba::_setRoombaStart: write() failed");
-    }
+    /* Write message */
+    _serial.Write(&message, 1);
 
     /* Recommended sleep time */
-    usleep(20000);
+    // _sleep(20);
+    //usleep(20000);
   }
 
   /*!
@@ -274,12 +202,11 @@ namespace RoombaDriver {
     /* Start byte*/
     unsigned char message = 130; 
     
-    if ((unsigned int)write(_roombaFD, &message, 1) != 1) {      
-      throw RoombaIOException("Roomba::_setRoombaStart: write() failed");
-    }
+    /* Write message */
+    _serial.Write(&message, 1);
 
     /* Recommended sleep time */
-    usleep(20000);
+    //usleep(20000);
   }
 
   /*!
@@ -296,11 +223,11 @@ namespace RoombaDriver {
     message[3] = (radius >> 8) & 255;
     message[4] = radius & 255;
 
-    if ((unsigned int)write(_roombaFD, &message, 5) != 5) {      
-      throw RoombaIOException("Roomba::_setRoombaStart: write() failed");
-    }
+    /* Write message */
+    _serial.Write(&message, 5);
 
     /* Recommended sleep time */
-    usleep(20000);
+    // _sleep(20);
+    //usleep(20000);
   }
 } // namespace Roomba

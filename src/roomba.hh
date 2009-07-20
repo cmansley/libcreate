@@ -9,8 +9,8 @@
 
 /* Implementation dependencies */
 #include <string>
-#include <termios.h>
 
+#include "serial_lin.hh"
 #include "roombaException.hh"
 
 /* Associate namespace */
@@ -45,23 +45,17 @@ namespace RoombaDriver {
     /** Device path for serial port */
     std::string _roombaPath;
 
-    /** Device file descriptor */
-    int _roombaFD;
-
-    /** Original serial settings */
-    struct termios _oldTerm;
-
     /** Status of communications */
     bool _roombaInitialized;
+
+    /** Serial port */
+    Serial _serial;
 
     /** Opens serial communications */
     void _setupConnection() throw( RoombaIOException );
 
     /** Closes serial communication */
     void _teardownConnection() throw( RoombaIOException );
-
-    /** Sets serial baud rate */
-    void _setSerialBaud() throw( RoombaIOException );
 
     /** Flush serial buffer */
     void _flushSerialBuffer() throw( RoombaIOException ) ;
