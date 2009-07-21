@@ -10,7 +10,12 @@
 /* Implementation dependencies */
 #include <string>
 
+#if defined (WIN32)
+#include "serial_win.hh"
+#else
 #include "serial_lin.hh"
+#endif
+
 #include "roombaException.hh"
 
 /* Associate namespace */

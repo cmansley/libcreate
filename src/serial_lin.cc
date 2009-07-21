@@ -1,3 +1,8 @@
+/*
+ *
+ * Code by Chris Mansley
+ *
+ */
 
 #include <termios.h>
 #include <sys/ioctl.h>
@@ -54,7 +59,6 @@ namespace RoombaDriver {
     // thread safety 
   }
 
-
   /*!
    *
    */
@@ -72,17 +76,16 @@ namespace RoombaDriver {
 
   }
 
-
   /*!
    *
    */
   void Serial::Write(const void *buffer, size_t num) throw( RoombaIOException ) {
 
+    /* Write bytes */
     if (write(_portFD, buffer, num) != num) {      
-      throw RoombaIOException("Serial::write: write() failed");
+      throw RoombaIOException("Serial::Write: write() failed");
     }
   }
-
 
   /*!
    *
@@ -110,7 +113,9 @@ namespace RoombaDriver {
 
     // thread safety
 
+    /* Flush old data */
     Flush();    
+
   }
 
 } // namespace RoombaDriver
