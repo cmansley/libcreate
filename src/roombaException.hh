@@ -22,32 +22,28 @@ namespace RoombaDriver {
      *
      */
     RoombaException( const std::string generalString ) :
-      _generalString(generalString), _detailedString("") { }
+      _what(generalString) { }
     
     /*!
      *
      */
     RoombaException( const std::string generalString, const std::string detailedString ) :
-      _generalString(generalString), _detailedString(detailedString) { }
+      _what(generalString + detailedString) { }
 
     
     /*!
      *
      */
     virtual const char* what( ) const throw() {
-      std::string result = _generalString + " " + _detailedString;
-      return result.c_str();
+	  return _what.c_str();
     }
 
     ~RoombaException() throw() {}
 
   private:
-    
-    /** String identifier */
-    std::string _generalString;
-    
-    /** Detailed string for each sub-class */
-    std::string _detailedString;
+
+	/** Full error message */
+	std::string _what;
 
   };
 
@@ -71,7 +67,7 @@ namespace RoombaDriver {
      * \param detailedString A more detailed description
      */
     RoombaIOException( const std::string detailedString ) :
-      RoombaException("ERROR: I/O exception -",detailedString) { }
+      RoombaException("ERROR: I/O exception - ",detailedString) { }
     
     /**
      * \brief Destructor
