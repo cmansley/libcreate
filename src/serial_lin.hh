@@ -50,8 +50,8 @@ namespace RoombaDriver {
     void Close() throw( RoombaIOException );
   
     /** Constants for generic baud rates */
-    static const unsigned int BAUD_56K = B57600; 
-    static const unsigned int BAUD_19K = B19200; 
+    static const unsigned int RBAUD_56K = B57600; 
+    static const unsigned int RBAUD_19K = B19200; 
 
   protected:
 
