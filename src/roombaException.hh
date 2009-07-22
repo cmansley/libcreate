@@ -35,15 +35,15 @@ namespace RoombaDriver {
      *
      */
     virtual const char* what( ) const throw() {
-	  return _what.c_str();
+      return _what.c_str();
     }
 
     ~RoombaException() throw() {}
 
   private:
 
-	/** Full error message */
-	std::string _what;
+    /** Full error message */
+    std::string _what;
 
   };
 

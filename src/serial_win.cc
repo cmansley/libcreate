@@ -120,18 +120,19 @@ namespace RoombaDriver {
   }
 
 
-/*
-  void readBytes(){
+  /*
+    void readBytes(){
   
     char szBuff[n + 1] = {0};
     DWORD dwBytesRead = 0;
 
     if(!ReadFile(hSerial, szBuff, n, &dwBytesRead, NULL)){
-      //error occurred. Report to user.
+    //error occurred. Report to user.
     }
 
-  }
-*/
+    }
+  */
+
   /*!
    *
    */
