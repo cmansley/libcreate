@@ -37,13 +37,13 @@ namespace RoombaDriver {
     ~Roomba( );
 
     /** Initialize the Roomba */
-    void Initialize( ) throw( RoombaIOException );
+    void Initialize( );
 
     /** Uninitialize the Roomba */
-    void Uninitialize( ) throw( RoombaIOException );
+    void Uninitialize( );
 
     /** Send drive command */
-    void Drive(signed short velocity, signed short radius) throw( RoombaIOException );
+    void Drive(signed short velocity, signed short radius);
 
   protected:
 
@@ -57,22 +57,22 @@ namespace RoombaDriver {
     Serial _serial;
 
     /** Opens serial communications */
-    void _setupConnection() throw( RoombaIOException );
+    void _setupConnection();
 
     /** Closes serial communication */
-    void _teardownConnection() throw( RoombaIOException );
+    void _teardownConnection();
 
     /** Flush serial buffer */
-    void _flushSerialBuffer() throw( RoombaIOException ) ;
+    void _flushSerialBuffer();
 
     /** Send start command */
-    void _setRoombaStart() throw( RoombaIOException );
+    void _setRoombaStart();
 
     /** Send full mode command */
-    void _setRoombaFullMode() throw( RoombaIOException );
+    void _setRoombaFullMode();
 
     /** Send control command */
-    void _setRoombaPassiveToSafeMode() throw( RoombaIOException );
+    void _setRoombaPassiveToSafeMode();
   };
 
 

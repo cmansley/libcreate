@@ -32,7 +32,7 @@ namespace RoombaDriver {
    *
    *
    */
-  void Roomba::Initialize( ) throw( RoombaIOException ) {
+  void Roomba::Initialize( ) {
   
     try {
       /* Initialize serial connection */
@@ -60,7 +60,7 @@ namespace RoombaDriver {
    *
    *
    */
-  void Roomba::Uninitialize() throw( RoombaIOException ) {
+  void Roomba::Uninitialize() {
 
     try {
 
@@ -95,7 +95,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Roomba::_setupConnection() throw( RoombaIOException ) { 
+  void Roomba::_setupConnection() { 
     
     try {
 
@@ -103,7 +103,7 @@ namespace RoombaDriver {
       _serial.Open(_roombaPath);
 
       /* Set serial baud rate */
-      _serial.SetBaud(Serial::BAUD_56K);
+      _serial.SetBaud(Serial::RBAUD_56K);
       
     } // try
 
@@ -125,7 +125,7 @@ namespace RoombaDriver {
    *
    *
    */
-  void Roomba::_teardownConnection() throw( RoombaIOException ) {
+  void Roomba::_teardownConnection() {
 
     /* Check comunication status */
     if (_roombaInitialized == false) {
@@ -139,7 +139,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Roomba::_flushSerialBuffer() throw( RoombaIOException ) {
+  void Roomba::_flushSerialBuffer() {
     
     try {
       
@@ -165,7 +165,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Roomba::_setRoombaStart() throw( RoombaIOException ) {
+  void Roomba::_setRoombaStart() {
 
     /* Start byte*/
     unsigned char message = 128; 
@@ -175,13 +175,13 @@ namespace RoombaDriver {
 
     /* Recommended sleep time */
     // _sleep(20)
-    usleep(20000);
+    //usleep(20000);
   }
 
   /*!
    *
    */
-  void Roomba::_setRoombaFullMode() throw( RoombaIOException ) {
+  void Roomba::_setRoombaFullMode() {
 
     /* Start byte*/
     unsigned char message = 132; 
@@ -197,7 +197,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Roomba::_setRoombaPassiveToSafeMode() throw( RoombaIOException ) {
+  void Roomba::_setRoombaPassiveToSafeMode() {
 
     /* Start byte*/
     unsigned char message = 130; 
@@ -212,7 +212,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Roomba::Drive(signed short velocity, signed short radius) throw( RoombaIOException ) {
+  void Roomba::Drive( signed short velocity,  signed short radius) {
     
     /* Start byte*/
     unsigned char message[5]; 

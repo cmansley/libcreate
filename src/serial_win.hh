@@ -32,26 +32,26 @@ namespace RoombaDriver {
     ~Serial( );
 
     /** Open serial communications */
-    void Open( const std::string path ) throw( RoombaIOException );
+    void Open( const std::string path );
 
     /** Sets serial baud rate */
-    void SetBaud( unsigned int baud ) throw( RoombaIOException );
+    void SetBaud( unsigned int baud );
 
     /** Write serial port */
-    void Write(const void *buffer, unsigned int num) throw( RoombaIOException );
+    void Write(const void *buffer, unsigned int num);
 
     /** Read serial port */
-    void Read(const void *buffer, unsigned int num) throw( RoombaIOException );
+    void Read(const void *buffer, unsigned int num);
 
     /** Flush (remove) data from buffers */
-    void Flush() throw( RoombaIOException );
+    void Flush();
 
     /** Close serial communication */
-    void Close() throw( RoombaIOException );
+    void Close();
   
     /** Constants for generic baud rates */
-    static const unsigned int BAUD_56K = 57600;
-    static const unsigned int BAUD_19K = 19200;
+    static const unsigned int RBAUD_56K = 57600;
+    static const unsigned int RBAUD_19K = 19200;
 
   protected:
 

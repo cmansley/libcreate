@@ -15,7 +15,7 @@ int main(int argc, char* argv[])
   /*
    * Instantiate an instance
    */
-  Roomba roomba("/dev/ttyUSB0");
+  Roomba roomba("COM2");
 
   /*
    * Initialize the roomba
@@ -31,9 +31,9 @@ int main(int argc, char* argv[])
 
 
   // do stuff with roomba
-  roomba.Drive(-300,32768);
+  roomba.Drive(-300,0x8000); // -300, 32768
 
-  sleep(2);
+  //sleep(2);
 
   /*
    * Uninitialize the device

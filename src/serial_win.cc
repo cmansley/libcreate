@@ -13,7 +13,7 @@ namespace RoombaDriver {
    *
    */
   Serial::Serial() {
-    _oldDCB.DCBlength = sizeof(dcbSerialParams);
+    _oldDCB.DCBlength = sizeof(_oldDCB);
   }
 
   /*!
@@ -26,14 +26,14 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Serial::Open( const std::string path ) throw( RoombaIOException ) {
+  void Serial::Open( const std::string path ) {
 
     /* Open the device */
     _portH = CreateFile(path.c_str(), GENERIC_READ | GENERIC_WRITE, 
 			0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
   
     /* Check error status */
-    if(hSerial == INVALID_HANDLE_VALUE){
+    if(_portH == INVALID_HANDLE_VALUE){
     
       //if(GetLastError()==ERROR_FILE_NOT_FOUND){
       //serial port does not exist. Inform user.
@@ -51,7 +51,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Serial::Flush() throw( RoombaIOException ) {
+  void Serial::Flush() {
     
     /* Flush the serial port */
     if(!PurgeComm(_portH, PURGE_RXCLEAR | PURGE_TXCLEAR)) {
@@ -63,7 +63,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Serial::Close() throw( RoombaIOException ) {
+  void Serial::Close() {
 
     /* Restore serial settings */
     if(!SetCommState(_portH, &_oldDCB)){
@@ -80,7 +80,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Serial::Write(const void *buffer, size_t num) throw( RoombaIOException ) {
+  void Serial::Write(const void *buffer, size_t num) {
 
     DWORD dwBytesRead = 0;
     
@@ -93,7 +93,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Serial::SetBaud( unsigned int baud ) throw( RoombaIOException ) {
+  void Serial::SetBaud( unsigned int baud ) {
 
     DCB dcb;
 
@@ -120,7 +120,7 @@ namespace RoombaDriver {
   }
 
 
-
+/*
   void readBytes(){
   
     char szBuff[n + 1] = {0};
@@ -131,7 +131,7 @@ namespace RoombaDriver {
     }
 
   }
-
+*/
   /*!
    *
    */
