@@ -73,6 +73,12 @@ namespace RoombaDriver {
 
     /** Send control command */
     void _setRoombaPassiveToSafeMode();
+
+    /** Start sensor stream */
+    void _startRoombaStream();
+
+    /** Stop sensor stream */
+    void _stopRoombaStream();
   };
 
 

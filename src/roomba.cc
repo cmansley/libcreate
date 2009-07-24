@@ -46,6 +46,11 @@ namespace RoombaDriver {
       
       /* Enter full mode */
       _setRoombaFullMode();
+
+      /* Spawn roomba monitor thread */
+
+      /* Start sensor stream */
+      _startRoombaStream();
     }
     
     catch(...) {
@@ -63,6 +68,11 @@ namespace RoombaDriver {
   void Roomba::Uninitialize() {
 
     try {
+
+      /* Stop sensor stream */
+      _stopRoombaStream();
+
+      /* Stop roomba monitor thread */
 
       /* Enter passive mode */
       _setRoombaStart();
@@ -206,6 +216,48 @@ namespace RoombaDriver {
     _serial.Write(&message, 1);
 
     /* Recommended sleep time */
+    //usleep(20000);
+  }
+
+  /*!
+   *
+   */
+  void Roomba::_startRoombaStream() {
+
+    /* Message bytes*/
+    unsigned char message[5]; 
+
+    message[0] = 148;
+    message[1] = 2;
+    message[2] = 19; // distance
+    message[3] = 20; // angle
+    message[4] = 7;  // bump sensor
+
+    /* Write message */
+    _serial.Write(&message, 5);
+
+    /* Recommended sleep time */
+    // _sleep(20);
+    //usleep(20000);
+    
+  }
+
+  /*!
+   *
+   */
+  void Roomba::_stopRoombaStream() {
+
+    /* Message bytes*/
+    unsigned char message[2]; 
+
+    message[0] = 150;
+    message[1] = 0;
+
+    /* Write message */
+    _serial.Write(&message, 2);
+
+    /* Recommended sleep time */
+    // _sleep(20);
     //usleep(20000);
   }
 
