@@ -11,6 +11,8 @@
 #include <string>
 #include <pthread.h>
 
+#include "serial.hh"
+
 #include "roombaException.hh"
 
 /* Associate namespace */
@@ -32,7 +34,7 @@ namespace RoombaDriver {
     ~RoombaMonitor();
 
     /** Start monitor for roomba */
-    void StartMonitor();
+    void StartMonitor(Serial* serial);
 
     /** Stop monitor for roomba */
     void StopMonitor();

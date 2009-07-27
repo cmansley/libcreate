@@ -51,7 +51,7 @@ namespace RoombaDriver {
     bool _roombaInitialized;
 
     /** Serial port */
-    Serial _serial;
+    Serial* _serial;
 
     /** Monitor object */
     RoombaMonitor* _monitor;

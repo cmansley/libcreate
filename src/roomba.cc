@@ -11,7 +11,10 @@ namespace RoombaDriver {
   Roomba::Roomba(const std::string path): _roombaPath(path),					  
 					  _roombaInitialized(false)
   {
-    /* Initialize memory */
+    /* Create serial */
+    _serial = new Serial();
+    
+    /* Create monitor */
     _monitor = new RoombaMonitor();
   }
 
@@ -26,6 +29,7 @@ namespace RoombaDriver {
 
       /* Free up dynamic memory*/
       delete _monitor;
+      delete _serial;
     }
 
     catch(...) {
@@ -53,7 +57,7 @@ namespace RoombaDriver {
       _setRoombaFullMode();
 
       /* Spawn roomba monitor thread */
-      _monitor->StartMonitor();
+      _monitor->StartMonitor(_serial);
 
       /* Start sensor stream */
       _startRoombaStream();
@@ -118,10 +122,10 @@ namespace RoombaDriver {
     try {
 
       /* Open the device */
-      _serial.Open(_roombaPath);
+      _serial->Open(_roombaPath);
 
       /* Set serial baud rate */
-      _serial.SetBaud(Serial::RBAUD_56K);
+      _serial->SetBaud(Serial::RBAUD_56K);
       
     } // try
 
@@ -151,7 +155,7 @@ namespace RoombaDriver {
     }
 
     /* Close serial port */
-    _serial.Close();
+    _serial->Close();
   }
 
   /*!
@@ -162,7 +166,7 @@ namespace RoombaDriver {
     try {
       
       /* Flush buffer */
-      _serial.Flush();
+      _serial->Flush();
 
     } // try
     
@@ -189,7 +193,7 @@ namespace RoombaDriver {
     unsigned char message = 128; 
 
     /* Write message */
-    _serial.Write(&message, 1);
+    _serial->Write(&message, 1);
 
     /* Recommended sleep time */
     // _sleep(20)
@@ -205,7 +209,7 @@ namespace RoombaDriver {
     unsigned char message = 132; 
     
     /* Write message */
-    _serial.Write(&message, 1);
+    _serial->Write(&message, 1);
 
     /* Recommended sleep time */
     // _sleep(20);
@@ -221,7 +225,7 @@ namespace RoombaDriver {
     unsigned char message = 130; 
     
     /* Write message */
-    _serial.Write(&message, 1);
+    _serial->Write(&message, 1);
 
     /* Recommended sleep time */
     //usleep(20000);
@@ -242,7 +246,7 @@ namespace RoombaDriver {
     message[4] = 7;  // bump sensor
 
     /* Write message */
-    _serial.Write(&message, 5);
+    _serial->Write(&message, 5);
 
     /* Recommended sleep time */
     // _sleep(20);
@@ -262,7 +266,7 @@ namespace RoombaDriver {
     message[1] = 0;
 
     /* Write message */
-    _serial.Write(&message, 2);
+    _serial->Write(&message, 2);
 
     /* Recommended sleep time */
     // _sleep(20);
@@ -284,7 +288,7 @@ namespace RoombaDriver {
     message[4] = radius & 255;
 
     /* Write message */
-    _serial.Write(&message, 5);
+    _serial->Write(&message, 5);
 
     /* Recommended sleep time */
     // _sleep(20);

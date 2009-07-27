@@ -20,7 +20,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void RoombaMonitor::StartMonitor() {
+  void RoombaMonitor::StartMonitor(Serial *serial) {
 
     /* Initialize mutex structure */
     if(pthread_mutex_init(&_threadMutex, NULL) != 0) {
