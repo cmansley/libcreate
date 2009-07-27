@@ -2,6 +2,8 @@
 
 #include "roomba.hh"
 
+#include "delay.hh"
+
 /* Associate the namespace */
 namespace RoombaDriver {
 
@@ -196,8 +198,7 @@ namespace RoombaDriver {
     _serial->Write(&message, 1);
 
     /* Recommended sleep time */
-    // _sleep(20)
-    //usleep(20000);
+    delay(20);
   }
 
   /*!
@@ -212,8 +213,7 @@ namespace RoombaDriver {
     _serial->Write(&message, 1);
 
     /* Recommended sleep time */
-    // _sleep(20);
-    //usleep(20000);
+    delay(20);
   }
 
   /*!
@@ -228,7 +228,7 @@ namespace RoombaDriver {
     _serial->Write(&message, 1);
 
     /* Recommended sleep time */
-    //usleep(20000);
+    delay(20);
   }
 
   /*!
@@ -249,8 +249,7 @@ namespace RoombaDriver {
     _serial->Write(&message, 5);
 
     /* Recommended sleep time */
-    // _sleep(20);
-    //usleep(20000);
+    delay(20);
     
   }
 
@@ -269,8 +268,7 @@ namespace RoombaDriver {
     _serial->Write(&message, 2);
 
     /* Recommended sleep time */
-    // _sleep(20);
-    //usleep(20000);
+    delay(20);
   }
 
   /*!
@@ -291,7 +289,7 @@ namespace RoombaDriver {
     _serial->Write(&message, 5);
 
     /* Recommended sleep time */
-    // _sleep(20);
-    //usleep(20000);
+    delay(20);
   }
+
 } // namespace Roomba
