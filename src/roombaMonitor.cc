@@ -90,10 +90,17 @@ namespace RoombaDriver {
     try {
       for(;;) {
 
+	/* Secure thread variables */
+	monitor->_getThreadMutex();
+
 	/* Check stoppage */
 	if(!monitor->_continueRunning) {
+	  monitor->_releaseThreadMutex();
 	  break;
 	}
+
+	/* Release thread variables */
+	monitor->_releaseThreadMutex();
 
 	// delay?
       }
