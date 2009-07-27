@@ -30,7 +30,7 @@ namespace RoombaDriver {
     _continueRunning = true;
 
     /* Start sensor thread */
-    if(pthread_create(&_threadID, NULL, RoombaMonitor::_monitorThread, NULL) != 0) {
+    if(pthread_create(&_threadID, NULL, RoombaMonitor::_monitorThread, this) != 0) {
     }
 
   }
