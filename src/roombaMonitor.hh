@@ -42,6 +42,18 @@ namespace RoombaDriver {
     /** Thread structure */
     pthread_t _threadID;
 
+    /** Thread data mutex */
+    pthread_mutex_t _threadMutex;
+
+    /** Thread running status */
+    bool _continueRunning;
+
+    /** */
+    void _getThreadMutex();
+    
+    /** */
+    void _releaseThreadMutex();
+
     /** Monitor thread */
     static void* _monitorThread(void* thread_id);
   };

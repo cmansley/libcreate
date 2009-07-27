@@ -12,6 +12,7 @@
 
 #include "serial.hh"
 
+#include "roombaMonitor.hh"
 #include "roombaException.hh"
 
 /* Associate namespace */
@@ -51,6 +52,9 @@ namespace RoombaDriver {
 
     /** Serial port */
     Serial _serial;
+
+    /** Monitor object */
+    RoombaMonitor* _monitor;
 
     /** Opens serial communications */
     void _setupConnection();

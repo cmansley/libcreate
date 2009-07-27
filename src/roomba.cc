@@ -1,7 +1,6 @@
 #include <iostream>
 
 #include "roomba.hh"
-#include "roombaException.hh"
 
 /* Associate the namespace */
 namespace RoombaDriver {
@@ -12,6 +11,8 @@ namespace RoombaDriver {
   Roomba::Roomba(const std::string path): _roombaPath(path),					  
 					  _roombaInitialized(false)
   {
+    /* Initialize memory */
+    _monitor = new RoombaMonitor();
   }
 
   /*!
@@ -20,7 +21,11 @@ namespace RoombaDriver {
   Roomba::~Roomba() {
     
     try {
+      /* Stop serial connection gracefully */
       _teardownConnection();
+
+      /* Free up dynamic memory*/
+      delete _monitor;
     }
 
     catch(...) {
@@ -48,10 +53,12 @@ namespace RoombaDriver {
       _setRoombaFullMode();
 
       /* Spawn roomba monitor thread */
+      _monitor->StartMonitor();
 
       /* Start sensor stream */
       _startRoombaStream();
-    }
+
+    } //try
     
     catch(...) {
       throw;
@@ -73,6 +80,7 @@ namespace RoombaDriver {
       _stopRoombaStream();
 
       /* Stop roomba monitor thread */
+      _monitor->StopMonitor();
 
       /* Enter passive mode */
       _setRoombaStart();
