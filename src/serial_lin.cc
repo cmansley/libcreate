@@ -79,6 +79,17 @@ namespace RoombaDriver {
   /*!
    *
    */
+  void Serial::Read(void *buffer, size_t num) throw( RoombaIOException ) {
+
+    /* Read bytes */
+    if (read(_portFD, buffer, num) != num) {      
+      throw RoombaIOException("Serial::Read: read() failed");
+    }
+  }
+
+  /*!
+   *
+   */
   void Serial::Write(const void *buffer, size_t num) throw( RoombaIOException ) {
 
     /* Write bytes */

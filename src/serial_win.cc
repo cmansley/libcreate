@@ -80,6 +80,21 @@ namespace RoombaDriver {
   /*!
    *
    */
+  void Serial::Read(const void *buffer, size_t num) {
+  
+    char szBuff[n + 1] = {0};
+    DWORD dwBytesRead = 0;
+
+    /* Read bytes */
+    if(!ReadFile(_portH, szBuff, n, &dwBytesRead, NULL)){
+      throw RoombaIOException("Serial::Read: ReadFile() failed");
+    }
+
+  }
+
+  /*!
+   *
+   */
   void Serial::Write(const void *buffer, size_t num) {
 
     DWORD dwBytesRead = 0;
@@ -119,19 +134,6 @@ namespace RoombaDriver {
 
   }
 
-
-  /*
-    void readBytes(){
-  
-    char szBuff[n + 1] = {0};
-    DWORD dwBytesRead = 0;
-
-    if(!ReadFile(hSerial, szBuff, n, &dwBytesRead, NULL)){
-    //error occurred. Report to user.
-    }
-
-    }
-  */
 
   /*!
    *
