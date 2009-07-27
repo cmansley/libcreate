@@ -22,6 +22,9 @@ namespace RoombaDriver {
    */
   void RoombaMonitor::StartMonitor(Serial *serial) {
 
+    /* Copy pointer */
+    _serial = serial;
+
     /* Initialize mutex structure */
     if(pthread_mutex_init(&_threadMutex, NULL) != 0) {
     }

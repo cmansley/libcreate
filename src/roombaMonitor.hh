@@ -50,6 +50,9 @@ namespace RoombaDriver {
     /** Thread running status */
     bool _continueRunning;
 
+    /** Serial object pointer */
+    Serial* _serial;
+
     /** */
     void _getThreadMutex();
     
