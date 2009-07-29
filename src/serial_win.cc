@@ -155,10 +155,10 @@ namespace RoombaDriver {
     COMMTIMEOUTS timeouts;
     
     /* Setup timeouts struct */
-    timeouts.ReadIntervalTimeout = 200; // Delay between the arrival of bytes must be less than 200 ms or timeout
+    timeouts.ReadIntervalTimeout = 0; // Delay between the arrival of bytes is irrelevant
 
     timeouts.ReadTotalTimeoutMultiplier = 0; // Timeout is not dependent on number of bytes
-    timeouts.ReadTotalTimeoutConstant = 0; // No constant time out
+    timeouts.ReadTotalTimeoutConstant = 200; // Wait 200ms, then timeout, regardless of whether all the bytes have been read
 
     timeouts.WriteTotalTimeoutMultiplier = 0; // Do not timeout on writes
     timeouts.WriteTotalTimeoutConstant = 0; // Do not timeout on writes
