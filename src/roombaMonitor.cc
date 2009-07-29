@@ -82,6 +82,44 @@ namespace RoombaDriver {
     }
   }
 
+  /*!
+   *
+   */
+  void RoombaMonitor::_readPacket(char *rawBuffer) {
+
+    int num_bytes = 0;
+    int total_bytes = 0;
+    int req_bytes = 11;
+    char *buffer = rawBuffer;
+
+    while(req_bytes > 0) {
+
+      /* Grab bytes */
+      num_bytes = _serial->Read(buffer, req_bytes);
+
+      /* Keep stats */
+      total_bytes += num_bytes;
+      req_bytes -= num_bytes;
+
+      /* Move pointer */
+      buffer = buffer + num_bytes;
+    }
+
+    /* Verify checksum */
+    int csum = 0;
+    for(int i = 0; i < total_bytes; i++) {
+      csum += rawBuffer[i];
+    }
+
+    if((csum & 0xFF) == 0) {
+      printf("Checksum verified\n");
+    }
+
+    for(int i=0; i<total_bytes; i++) {
+      printf("%d ",rawBuffer[i]);
+    }
+    printf("\n");
+  }
 
   /*!
    *
@@ -90,13 +128,15 @@ namespace RoombaDriver {
 
     RoombaMonitor* monitor = (RoombaMonitor*) thread_arg;
 
-    char buffer[9];
-
+    char buffer[255];
+    
     try {
       for(;;) {
 
-	/* Grab buffer */
-	monitor->_serial->Read(buffer, 9);
+	/* Grab raw packet */
+	monitor->_readPacket(buffer);
+
+	/* Build sensor data */
 
 	/* Secure thread variables */
 	monitor->_getThreadMutex();
@@ -112,6 +152,12 @@ namespace RoombaDriver {
 
 	// delay?
       }
+    }
+
+    /* Grab roomba IO exceptions */
+    catch(RoombaIOException &e) {
+      std::cerr << e.what() << std::endl;
+      throw;
     }
 
     /* A failsafe */
