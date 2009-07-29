@@ -24,20 +24,32 @@ namespace RoombaDriver {
   {
   public:
 
+    /** Constructor */
+    RoombaSensor();
+
     /** Get distance traveled */
-    double getDistance() { return _distanceTraveled; } 
+    double GetDistance() { return _distanceTraveled; } 
 
     /** Get angle traveled */
-    double getAngle() { return _angleTraveled; }
+    double GetAngle() { return _angleTraveled; }
 
     /** Get left wall */
-    bool leftHit() { return _leftBumper; }
+    bool LeftHit() { return _leftBumper; }
 
     /** Get right wall */
-    bool rightHit() { return _rightBumper; }
+    bool RightHit() { return _rightBumper; }
 
     /** Get wall hit */
-    bool hitWall() { return (_rightBumper && _leftbumper); }
+    bool HitWall() { return (_rightBumper && _leftBumper); }
+
+    /** Reset current data */
+    void Reset();
+
+    /** Update internal model of roomba */
+    void Update(char *raw);
+
+    /** Return freshness of data */
+    bool isStale() { return _stale; }
 
   private:
     /** Total distance traveled since reset */
@@ -51,6 +63,9 @@ namespace RoombaDriver {
 
     /** Current right wall sensor */
     bool _rightBumper;
+
+    /** Has update been called since reset */
+    bool _stale;
   };
 
 } // namespace RoombaDriver
