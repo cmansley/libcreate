@@ -62,6 +62,12 @@ namespace RoombaDriver {
 
     /** Original serial settings */
     DCB _oldDCB;
+    
+    /** Original timeout settings */
+    COMMTIMEOUTS _oldTimeouts;
+
+    /** Set serial timeout settings */
+    void _setTimeouts();
   };
 
 } // namespace RoombaDriver

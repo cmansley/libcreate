@@ -46,6 +46,14 @@ namespace RoombaDriver {
     if(!GetCommState(_portH, &_oldDCB)) {
       throw RoombaIOException("Serial::Open: GetCommState() failed");    
     }
+
+    /* Backup original timeout settings */
+    if(!GetCommTimeouts(_portH, &_oldTimeouts)) {
+      throw RoombaIOException("Serial::Open: GetCommTimeouts() failed");    
+    }
+
+    /* Setup serial timeouts */
+
   }
 
   /*!
@@ -64,6 +72,11 @@ namespace RoombaDriver {
    *
    */
   void Serial::Close() {
+
+    /* Restore serial timeouts */
+    if(!SetCommTimeouts(_portH, &_oldTimeouts)) {
+      throw RoombaIOException("Serial::Close: SetCommTimeouts() failed");
+    }
 
     /* Restore serial settings */
     if(!SetCommState(_portH, &_oldDCB)){
@@ -118,10 +131,10 @@ namespace RoombaDriver {
     }
  
     /* Set baud rate */
-    dcb.BaudRate=baud;
-    dcb.ByteSize=8;
-    dcb.StopBits=ONESTOPBIT;
-    dcb.Parity=NOPARITY;
+    dcb.BaudRate = baud;
+    dcb.ByteSize = 8;
+    dcb.StopBits = ONESTOPBIT;
+    dcb.Parity = NOPARITY;
   
     /* Set the serial settings */
     if(!SetCommState(_portH, &dcb)){
@@ -132,6 +145,28 @@ namespace RoombaDriver {
     /* Flush old data */
     Flush();    
 
+  }
+
+  /*!
+   *
+   */
+  void Serial::_setTimeout() {
+    
+    COMMTIMEOUTS timeouts;
+    
+    /* Setup timeouts struct */
+    timeouts.ReadIntervalTimeout = 200; // Delay between the arrival of bytes must be less than 200 ms or timeout
+
+    timeouts.ReadTotalTimeoutMultiplier = 0; // Timeout is not dependent on number of bytes
+    timeouts.ReadTotalTimeoutConstant = 0; // No constant time out
+
+    timeouts.WriteTotalTimeoutMultiplier = 0; // Do not timeout on writes
+    timeouts.WriteTotalTimeoutConstant = 0; // Do not timeout on writes
+
+    /* Set serial timeout */
+    if(!SetCommTimeouts(_portH, &timeouts)){
+      throw RoombaIOException("Serial::_setTimeout: SetCommTimeout() failed");
+    }
   }
 
 
