@@ -41,7 +41,7 @@ namespace RoombaDriver {
     void Write(const void *buffer, unsigned int num);
 
     /** Read serial port */
-    void Read(void *buffer, unsigned int num);
+    int Read(void *buffer, unsigned int num);
 
     /** Flush (remove) data from buffers */
     void Flush();
