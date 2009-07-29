@@ -128,6 +128,9 @@ namespace RoombaDriver {
 
       /* Set serial baud rate */
       _serial->SetBaud(Serial::RBAUD_56K);
+
+      /* Flush any existing data */
+      _flushSerialBuffer();
       
     } // try
 
@@ -240,7 +243,7 @@ namespace RoombaDriver {
     unsigned char message[5]; 
 
     message[0] = 148;
-    message[1] = 2;
+    message[1] = 3;
     message[2] = 19; // distance
     message[3] = 20; // angle
     message[4] = 7;  // bump sensor
