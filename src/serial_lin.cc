@@ -42,6 +42,7 @@ namespace RoombaDriver {
     if(tcgetattr(_portFD, &_oldTerm) < 0) {
       throw RoombaIOException("Serial::Open: tcgetattr() failed");
     }
+
   }
 
   /*!
@@ -79,12 +80,33 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Serial::Read(void *buffer, size_t num) throw( RoombaIOException ) {
+  int Serial::Read(void *buffer, size_t num) {
 
-    /* Read bytes */
-    if (read(_portFD, buffer, num) != num) {      
-      throw RoombaIOException("Serial::Read: read() failed");
+    struct timeval timeout;
+    fd_set fids;
+    int num_active;
+    int numBytes = 0;
+
+    /* Initialize and set the file descriptor set for select */
+    FD_ZERO(&fids);
+    FD_SET(_portFD, &fids);
+
+    /* Setup the timeout structure */
+    memset(&timeout, 0, sizeof(timeout));   
+    timeout.tv_usec = 200000; // 200ms
+
+    /* Wait for data or timeout*/
+    num_active = select(_portFD+1, &fids, 0, 0, &timeout);
+
+    /* Check for some active fids */
+    if(num_active > 0) {
+
+      /* Read bytes */
+      numBytes = read(_portFD, buffer, num);
     }
+
+    return numBytes;
+
   }
 
   /*!
@@ -123,10 +145,6 @@ namespace RoombaDriver {
     }
 
     // thread safety
-
-    /* Flush old data */
-    Flush();    
-
   }
 
 } // namespace RoombaDriver
