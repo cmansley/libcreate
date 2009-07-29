@@ -90,8 +90,13 @@ namespace RoombaDriver {
 
     RoombaMonitor* monitor = (RoombaMonitor*) thread_arg;
 
+    char buffer[9];
+
     try {
       for(;;) {
+
+	/* Grab buffer */
+	monitor->_serial->Read(buffer, 9);
 
 	/* Secure thread variables */
 	monitor->_getThreadMutex();
