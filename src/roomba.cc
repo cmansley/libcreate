@@ -311,8 +311,20 @@ namespace RoombaDriver {
     RDrive(300, _STRAIGHT);
 
     /* Block waiting for roomba to complete task */
-    while(_sensor->GetDistance() < distance) {
-      /* FIXME: Add some sort of timeout for broken rotations */
+    for(;;) {
+
+      /* FIXME: Add some sort of timeout for broken forward travel */
+
+      /* Check for fresh data */
+      if(!_sensor->isStale()) {
+	
+	/* If the angle is greater than the desired break */
+	if(_sensor->GetDistance() > distance) {
+	  break;
+	}	
+      }
+
+      /* Wait it out */
       delay(50);
     }
 
@@ -336,8 +348,20 @@ namespace RoombaDriver {
     }
 
     /* Block waiting for roomba to complete task */
-    while(_sensor->GetAngle() < degrees) {
+    for(;;) {
+
       /* FIXME: Add some sort of timeout for broken rotations */
+
+      /* Check for fresh data */
+      if(!_sensor->isStale()) {
+	
+	/* If the angle is greater than the desired break */
+	if(_sensor->GetAngle() > degrees) {
+	  break;
+	}	
+      }
+
+      /* Wait it out */
       delay(50);
     }
 
