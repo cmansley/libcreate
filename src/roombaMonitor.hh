@@ -39,6 +39,9 @@ namespace RoombaDriver {
     /** Stop monitor for roomba */
     void StopMonitor();
 
+    /** Grab current sensor object */
+    void GrabCurrentSensor(RoombaSensor sensor);
+
   private:
 
     /** Thread structure */
@@ -47,11 +50,23 @@ namespace RoombaDriver {
     /** Thread data mutex */
     pthread_mutex_t _threadMutex;
 
+    /** Sensor data mutex */
+    pthread_mutex_t _sensorMutex;
+
     /** Thread running status */
     bool _continueRunning;
 
     /** Serial object pointer */
     Serial* _serial;
+
+    /** Monitor sensor object */
+    RoombaSensor* _sensor;
+
+    /** */
+    void _getSensorMutex();
+    
+    /** */
+    void _releaseSensorMutex();
 
     /** */
     void _getThreadMutex();

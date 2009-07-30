@@ -9,12 +9,14 @@ namespace RoombaDriver {
    *
    */
   RoombaMonitor::RoombaMonitor() {
+    _sensor = new RoombaSensor();
   }
 
   /*!
    *
    */
   RoombaMonitor::~RoombaMonitor() {
+    delete _sensor;
   }
 
   /*!
@@ -60,6 +62,43 @@ namespace RoombaDriver {
     if(pthread_mutex_destroy(&_threadMutex) != 0) {
     }
 
+  }
+
+  /*!
+   *
+   */
+  void RoombaMonitor::GrabCurrentSensor(RoombaSensor* sensor) {
+    
+    /* Secure the local copy of sensor */
+    _getSensorMutex();
+
+    /* Copy sensor information over */
+    *sensor = *_sensor; // copy assignment should do something smart like integrate the two readings if not stale
+    _sensor->Reset(); // clear all information in sensor class
+
+    /* Release sensor information */
+    _releaseSensorMutex();
+    
+  }
+
+  /*!
+   *
+   */
+  void RoombaMonitor::_getSensorMutex() {
+    
+    /* Lock thread data mutex */
+    if(pthread_mutex_lock(&_sensorMutex) != 0) {
+    }
+  }
+
+  /*!
+   *
+   */
+  void RoombaMonitor::_releaseSensorMutex() {
+
+    /* Release thread data mutex */
+    if(pthread_mutex_unlock(&_sensorMutex) != 0) {
+    }
   }
 
   /*!
@@ -136,7 +175,14 @@ namespace RoombaDriver {
 	/* Grab raw packet */
 	monitor->_readPacket(buffer);
 
+	/* Secure the local copy of sensor */
+	_getSensorMutex();
+
 	/* Build sensor data */
+	monitor->_sensor->Update(buffer);
+
+	/* Release sensor information */
+	_releaseSensorMutex();
 
 	/* Secure thread variables */
 	monitor->_getThreadMutex();
