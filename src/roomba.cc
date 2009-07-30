@@ -18,6 +18,9 @@ namespace RoombaDriver {
     
     /* Create monitor */
     _monitor = new RoombaMonitor();
+
+    /* Create sensor */
+    _sensor = new RoombaSensor();
   }
 
   /*!
@@ -30,8 +33,9 @@ namespace RoombaDriver {
       _teardownConnection();
 
       /* Free up dynamic memory*/
-      delete _monitor;
       delete _serial;
+      delete _monitor;
+      delete _sensor;
     }
 
     catch(...) {
@@ -300,12 +304,44 @@ namespace RoombaDriver {
    */
   void Roomba::Drive(float distance) {
 
+    /* Reset internal model */
+    _sensor->Reset();
+
+    /* Drive forward at 300 mm/s */
+    RDrive(300, _STRAIGHT);
+
+    /* Block waiting for roomba to complete task */
+    while(_sensor->GetDistance() < distance) {
+      /* FIXME: Add some sort of timeout for broken rotations */
+      delay(50);
+    }
+
+    /* Stop moving */
+    RDrive(0, _STRAIGHT);
   }
 
   /*!
    *
    */
   void Roomba::Rotate(float degrees) {
-    
+
+    /* Reset internal model */
+    _sensor->Reset();
+
+    /* Rotate at 300 mm/s */
+    if(degrees > 0) {
+      RDrive(300, _CW);
+    } else {
+      RDrive(300, _ANTICW);
+    }
+
+    /* Block waiting for roomba to complete task */
+    while(_sensor->GetAngle() < degrees) {
+      /* FIXME: Add some sort of timeout for broken rotations */
+      delay(50);
+    }
+
+    /* Stop moving */
+    RDrive(0, _STRAIGHT);
   }
 } // namespace Roomba

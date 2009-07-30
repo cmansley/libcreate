@@ -12,8 +12,9 @@
 
 #include "serial.hh"
 
-#include "roombaMonitor.hh"
 #include "roombaException.hh"
+#include "roombaMonitor.hh"
+#include "roombaSensor.hh"
 
 /* Associate namespace */
 namespace RoombaDriver {
@@ -43,10 +44,10 @@ namespace RoombaDriver {
     void RDrive(signed short velocity, signed short radius);
 
     /** Drive the specified distance */
-    void Roomba::Drive(float distance);
+    void Drive(float distance);
 
     /** Rotate by the specified angle */
-    void Roomba::Rotate(float degrees);
+    void Rotate(float degrees);
 
   protected:
 
@@ -61,6 +62,9 @@ namespace RoombaDriver {
 
     /** Monitor object */
     RoombaMonitor* _monitor;
+
+    /** Sensor object */
+    RoombaSensor* _sensor;
 
     /** Opens serial communications */
     void _setupConnection();
@@ -85,6 +89,11 @@ namespace RoombaDriver {
 
     /** Stop sensor stream */
     void _stopRoombaStream();
+
+  private:
+    static const unsigned short _STRAIGHT = 0x8000;
+    static const unsigned short _CW = 0xFFFF;
+    static const unsigned short _ANTICW = 0x0001;
   };
 
 
