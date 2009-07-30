@@ -176,13 +176,13 @@ namespace RoombaDriver {
 	monitor->_readPacket(buffer);
 
 	/* Secure the local copy of sensor */
-	_getSensorMutex();
+	monitor->_getSensorMutex();
 
 	/* Build sensor data */
 	monitor->_sensor->Update(buffer);
 
 	/* Release sensor information */
-	_releaseSensorMutex();
+	monitor->_releaseSensorMutex();
 
 	/* Secure thread variables */
 	monitor->_getThreadMutex();

@@ -14,6 +14,7 @@
 #include "serial.hh"
 
 #include "roombaException.hh"
+#include "roombaSensor.hh"
 
 /* Associate namespace */
 namespace RoombaDriver {
@@ -40,7 +41,7 @@ namespace RoombaDriver {
     void StopMonitor();
 
     /** Grab current sensor object */
-    void GrabCurrentSensor(RoombaSensor sensor);
+    void GrabCurrentSensor(RoombaSensor* sensor);
 
   private:
 
