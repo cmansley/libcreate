@@ -277,7 +277,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Roomba::Drive( signed short velocity,  signed short radius) {
+  void Roomba::RDrive( signed short velocity,  signed short radius) {
     
     /* Start byte*/
     unsigned char message[5]; 
@@ -295,4 +295,17 @@ namespace RoombaDriver {
     delay(20);
   }
 
+  /*!
+   *
+   */
+  void Roomba::Drive(float distance) {
+
+  }
+
+  /*!
+   *
+   */
+  void Roomba::Rotate(float degrees) {
+    
+  }
 } // namespace Roomba

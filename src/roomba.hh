@@ -39,8 +39,14 @@ namespace RoombaDriver {
     /** Uninitialize the Roomba */
     void Uninitialize( );
 
-    /** Send drive command */
-    void Drive(signed short velocity, signed short radius);
+    /** Send roomba drive command */
+    void RDrive(signed short velocity, signed short radius);
+
+    /** Drive the specified distance */
+    void Roomba::Drive(float distance);
+
+    /** Rotate by the specified angle */
+    void Roomba::Rotate(float degrees);
 
   protected:
 
