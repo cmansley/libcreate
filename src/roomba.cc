@@ -315,6 +315,9 @@ namespace RoombaDriver {
 
       /* FIXME: Add some sort of timeout for broken forward travel */
 
+      /* Grab data from monitor */
+      _monitor->GrabCurrentSensor(_sensor);
+
       /* Check for fresh data */
       if(!_sensor->isStale()) {
 	
@@ -325,7 +328,7 @@ namespace RoombaDriver {
       }
 
       /* Wait it out */
-      delay(50);
+      delay(20);
     }
 
     /* Stop moving */
@@ -352,6 +355,9 @@ namespace RoombaDriver {
 
       /* FIXME: Add some sort of timeout for broken rotations */
 
+      /* Grab data from monitor */
+      _monitor->GrabCurrentSensor(_sensor);
+
       /* Check for fresh data */
       if(!_sensor->isStale()) {
 	
@@ -362,7 +368,7 @@ namespace RoombaDriver {
       }
 
       /* Wait it out */
-      delay(50);
+      delay(20);
     }
 
     /* Stop moving */

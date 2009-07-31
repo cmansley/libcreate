@@ -27,6 +27,9 @@ namespace RoombaDriver {
     /** Constructor */
     RoombaSensor();
 
+    /** Copy assignment operator */
+    RoombaSensor& operator=(const RoombaSensor& rhs);
+
     /** Get distance traveled */
     double GetDistance() { return _distanceTraveled; } 
 

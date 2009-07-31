@@ -73,8 +73,8 @@ namespace RoombaDriver {
     _getSensorMutex();
 
     /* Copy sensor information over */
-    *sensor = *_sensor; // copy assignment should do something smart like integrate the two readings if not stale
-    _sensor->Reset(); // clear all information in sensor class
+    *sensor = *_sensor; // see copy assignment operator for documentation
+    _sensor->Reset(); 
 
     /* Release sensor information */
     _releaseSensorMutex();
