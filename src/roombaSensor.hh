@@ -69,6 +69,9 @@ namespace RoombaDriver {
 
     /** Has update been called since reset */
     bool _stale;
+
+    /** */
+    void _parsePacket(char *raw);
   };
 
 } // namespace RoombaDriver

@@ -128,36 +128,50 @@ namespace RoombaDriver {
 
     int num_bytes = 0;
     int total_bytes = 0;
-    int req_bytes = 11;
+    int req_bytes;
     char *buffer = rawBuffer;
+    int csum = 0;
+
+    /* Grab first bytes */
+    while(total_bytes < 2) {
+      num_bytes = _serial->Read(buffer+total_bytes, 1);
+      total_bytes += num_bytes;
+      
+      /* Check for bytes */
+      if(total_bytes > 0) {
+	
+	/* Check for stream command */
+	if(buffer[0] != 19) {
+	  
+	  /* If the first byte is not correct, move everything over one and check again*/
+	  buffer[0] = buffer[1];
+	  buffer[1] = buffer[2];
+	  total_bytes -= 1;
+	}
+      }
+    }
+
+    /* Second byte tells how many more bytes to read plus one for checksum*/
+    req_bytes = buffer[1] + 1;
 
     while(req_bytes > 0) {
 
       /* Grab bytes */
-      num_bytes = _serial->Read(buffer, req_bytes);
+      num_bytes = _serial->Read(buffer+total_bytes, req_bytes);
 
       /* Keep stats */
       total_bytes += num_bytes;
       req_bytes -= num_bytes;
-
-      /* Move pointer */
-      buffer = buffer + num_bytes;
     }
 
     /* Verify checksum */
-    int csum = 0;
     for(int i = 0; i < total_bytes; i++) {
       csum += rawBuffer[i];
     }
 
-    if((csum & 0xFF) == 0) {
-      printf("Checksum verified\n");
+    if((csum & 0xFF) != 0) {
+      std::cerr << "RoombaMonitor::_readPacket: Checksum Failed" << std::endl;
     }
-
-    for(int i=0; i<total_bytes; i++) {
-      printf("%d ",rawBuffer[i]);
-    }
-    printf("\n");
   }
 
   /*!
