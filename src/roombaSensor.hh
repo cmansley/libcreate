@@ -70,8 +70,14 @@ namespace RoombaDriver {
     /** Has update been called since reset */
     bool _stale;
 
-    /** */
+    /** Parse packet and integrate with current readings */
     void _parsePacket(char *raw);
+
+    /** Constants */
+    static const int DISTANCE_ID = 19;
+    static const int ANGLE_ID = 20;
+    static const int BUMPS_ID = 7;
+    
   };
 
 } // namespace RoombaDriver

@@ -75,16 +75,14 @@ namespace RoombaDriver {
     /* Parse data and integrate */
     _parsePacket(raw);
 
-    /*for(int i=0; i<raw[1]+2; i++) {
-      printf("%d ",raw[i]);
-    }
-    printf("\n");*/
-
     /* Date is now fresh */
     _stale = false;
 
   }
 
+  /*!
+   *
+   */
   void RoombaSensor::_parsePacket(char *raw) {
 
     signed short distance;
@@ -94,6 +92,7 @@ namespace RoombaDriver {
     int index = 2;
     int total_bytes = 0;
 
+    /* Verify the header byter */
     if(raw[0] != 19) {
       // fail
       return;
@@ -102,21 +101,25 @@ namespace RoombaDriver {
     /* Grab number of bytes following start */
     total_bytes = raw[1];
     
+    /* Walk through each sensor data byte */
     while(total_bytes > 0) {
         
       switch(raw[index]) {
-      case 19:
+      case DISTANCE_ID:
 	distance = raw[index+1]<<8 | raw[index+2];
 	total_bytes -= 3;
 	index += 3;
-      case 20:
+	break;
+      case ANGLE_ID:
 	angle = raw[index+1]<<8 | raw[index+2];
 	total_bytes -= 3;
 	index += 3;
-      case 7:
+	break;
+      case BUMPS_ID:
 	bools = raw[index+1];
 	total_bytes -= 2;
 	index += 2;
+	break;
       }
     }
 
@@ -129,6 +132,7 @@ namespace RoombaDriver {
       _angleTraveled = angle;
     }
 
+    /* Grab bumper configuration */
     _leftBumper = bools & 0x2;
     _rightBumper = bools & 0x1;
     
