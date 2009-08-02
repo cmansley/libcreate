@@ -53,7 +53,7 @@ namespace RoombaDriver {
     }
 
     /* Setup serial timeouts */
-
+    _setTimeout();
   }
 
   /*!
@@ -142,7 +142,6 @@ namespace RoombaDriver {
     if(!SetCommState(_portH, &dcb)){
       throw RoombaIOException("Serial::SetBaud: SetCommState() failed");
     }
-
 
     /* Flush old data */
     Flush();    
