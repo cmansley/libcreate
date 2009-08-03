@@ -1,8 +1,10 @@
 project(libcreate)
 cmake_minimum_required(VERSION 2.6)
 
-find_package(Threads)
-set(LIBS ${LIBS} ${CMAKE_THREAD_LIBS_INIT})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/modules)
+
+find_package(Pthreads)
+set(LIBS ${LIBS} ${PTHREADS_LIBRARY})
 
 set(srcs src/main.cc src/roomba.cc src/roombaMonitor.cc src/roombaSensor.cc)
 
