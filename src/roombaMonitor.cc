@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "delay.hh"
+
 #include "roombaMonitor.hh"
 
 /* Associate the namespace */
@@ -124,7 +126,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void RoombaMonitor::_readPacket(char *rawBuffer) {
+  int RoombaMonitor::_readPacket(char *rawBuffer) {
 
     int num_bytes = 0;
     int total_bytes = 0;
@@ -171,7 +173,10 @@ namespace RoombaDriver {
 
     if((csum & 0xFF) != 0) {
       std::cerr << "RoombaMonitor::_readPacket: Checksum Failed" << std::endl;
+      return 0;
     }
+
+    return total_bytes;
   }
 
   /*!
@@ -187,20 +192,21 @@ namespace RoombaDriver {
       for(;;) {
 
 	/* Grab raw packet */
-	monitor->_readPacket(buffer);
+	if(monitor->_readPacket(buffer) != 0) {
 
-	/* Secure the local copy of sensor */
-	monitor->_getSensorMutex();
-
-	/* Build sensor data */
-	monitor->_sensor->Update(buffer);
-
-	/* Release sensor information */
-	monitor->_releaseSensorMutex();
-
+	  /* Secure the local copy of sensor */
+	  monitor->_getSensorMutex();
+	  
+	  /* Build sensor data */
+	  monitor->_sensor->Update(buffer);
+	  
+	  /* Release sensor information */
+	  monitor->_releaseSensorMutex();
+	}
+	  
 	/* Secure thread variables */
 	monitor->_getThreadMutex();
-
+	
 	/* Check stoppage */
 	if(!monitor->_continueRunning) {
 	  monitor->_releaseThreadMutex();
@@ -210,7 +216,8 @@ namespace RoombaDriver {
 	/* Release thread variables */
 	monitor->_releaseThreadMutex();
 
-	// delay?
+	/* Wait it out */
+	delay(10);
       }
     }
 

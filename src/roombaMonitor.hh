@@ -76,7 +76,7 @@ namespace RoombaDriver {
     void _releaseThreadMutex();
 
     /** Read sensor packet */
-    void _readPacket(char *buffer);
+    int _readPacket(char *buffer);
     
     /** Monitor thread */
     static void* _monitorThread(void* thread_id);
