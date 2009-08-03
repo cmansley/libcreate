@@ -33,6 +33,10 @@ namespace RoombaDriver {
     if(pthread_mutex_init(&_threadMutex, NULL) != 0) {
     }
 
+    /* Initialize mutex structure */
+    if(pthread_mutex_init(&_sensorMutex, NULL) != 0) {
+    }
+
     /* Signal thread to run */
     _continueRunning = true;
 
@@ -64,6 +68,9 @@ namespace RoombaDriver {
     if(pthread_mutex_destroy(&_threadMutex) != 0) {
     }
 
+    /* Destroy mutex */
+    if(pthread_mutex_destroy(&_sensorMutex) != 0) {
+    }
   }
 
   /*!

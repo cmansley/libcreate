@@ -5,6 +5,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${PROJECT_SOURCE_DIR}/modules)
 
 find_package(Pthreads)
 set(LIBS ${LIBS} ${PTHREADS_LIBRARY})
+include_directories(${PTHREADS_INCLUDE_DIR})
 
 set(srcs src/main.cc src/roomba.cc src/roombaMonitor.cc src/roombaSensor.cc)
 

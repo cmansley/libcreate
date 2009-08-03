@@ -53,7 +53,7 @@ namespace RoombaDriver {
     }
 
     /* Setup serial timeouts */
-    _setTimeout();
+    _setTimeouts();
   }
 
   /*!
@@ -93,13 +93,12 @@ namespace RoombaDriver {
   /*!
    *
    */
-  int Serial::Read(const void *buffer, size_t num) {
+  int Serial::Read(void *buffer, unsigned int num) {
   
-    char szBuff[n + 1] = {0};
     DWORD dwBytesRead = 0;
 
     /* Read bytes */
-    if(!ReadFile(_portH, szBuff, n, &dwBytesRead, NULL)){
+    if(!ReadFile(_portH, buffer, num, &dwBytesRead, NULL)){
       /* TESTME: Verify that a timeout does not throw error */
       throw RoombaIOException("Serial::Read: ReadFile() failed");
     }
@@ -151,7 +150,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  void Serial::_setTimeout() {
+  void Serial::_setTimeouts() {
     
     COMMTIMEOUTS timeouts;
     
