@@ -344,11 +344,16 @@ namespace RoombaDriver {
     /* Reset internal model */
     _sensor->Reset();
 
-    /* Rotate at 100 mm/s */
+    /*  
+     * Note: Apparently any speeds at or less than 100 cause ill
+     *  effects in angle measurement.
+     */
+       
+    /* Rotate at 150 mm/s */
     if(degrees > 0) {
-      RDrive(100, _CW);
+      RDrive(150, _CW);
     } else {
-      RDrive(100, _ANTICW);
+      RDrive(150, _ANTICW);
     }
 
     /* Movement is correct, just check magnitude */
