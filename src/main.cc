@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include "roomba.hh"
+#include "delay.hh"
 
 using namespace std;
 using namespace RoombaDriver;
@@ -15,7 +16,7 @@ int main(int argc, char* argv[])
   /*
    * Instantiate an instance
    */
-  Roomba roomba("COM2");
+  Roomba roomba("/dev/ttyUSB0");
 
   /*
    * Initialize the roomba
@@ -30,10 +31,8 @@ int main(int argc, char* argv[])
   }
 
 
-  // do stuff with roomba
-  roomba.Drive(-300,0x8000); // -300, 32768
-
-  //sleep(2);
+  // rotate 90 deg
+  roomba.Rotate(90);
 
   /*
    * Uninitialize the device

@@ -85,9 +85,9 @@ namespace RoombaDriver {
    */
   void RoombaSensor::_parsePacket(char *raw) {
 
-    signed short distance;
-    signed short angle;
-    unsigned char bools;
+    signed short distance = 0;
+    signed short angle = 0;
+    unsigned char bools = 0;
 
     int index = 2;
     int total_bytes = 0;

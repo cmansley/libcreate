@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 #include "roomba.hh"
 
@@ -343,12 +344,15 @@ namespace RoombaDriver {
     /* Reset internal model */
     _sensor->Reset();
 
-    /* Rotate at 300 mm/s */
+    /* Rotate at 100 mm/s */
     if(degrees > 0) {
-      RDrive(300, _CW);
+      RDrive(100, _CW);
     } else {
-      RDrive(300, _ANTICW);
+      RDrive(100, _ANTICW);
     }
+
+    /* Movement is correct, just check magnitude */
+    degrees = fabs(degrees);
 
     /* Block waiting for roomba to complete task */
     for(;;) {
@@ -362,7 +366,7 @@ namespace RoombaDriver {
       if(!_sensor->isStale()) {
 	
 	/* If the angle is greater than the desired break */
-	if(_sensor->GetAngle() > degrees) {
+	if(fabs(_sensor->GetAngle()) > degrees) {
 	  break;
 	}	
       }
