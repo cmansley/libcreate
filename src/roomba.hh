@@ -10,6 +10,8 @@
 /* Definition dependencies */
 #include <string>
 
+#include "dll.hh"
+
 #include "serial.hh"
 #include "roombaMonitor.hh"
 #include "roombaSensor.hh"
@@ -22,7 +24,7 @@ namespace RoombaDriver {
    *
    * Class Description
    */
-  class Roomba
+  class DLL_EXPORT Roomba
   {
   public:
     
