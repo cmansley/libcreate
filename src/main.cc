@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include "roomba.hh"
-#include "delay.hh"
 
 using namespace std;
 using namespace RoombaDriver;

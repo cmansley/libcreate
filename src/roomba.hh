@@ -7,12 +7,10 @@
 #ifndef ROOMBA_HH
 #define ROOMBA_HH
 
-/* Implementation dependencies */
+/* Definition dependencies */
 #include <string>
 
 #include "serial.hh"
-
-#include "roombaException.hh"
 #include "roombaMonitor.hh"
 #include "roombaSensor.hh"
 

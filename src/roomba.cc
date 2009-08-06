@@ -1,8 +1,10 @@
+
+/* Implementation dependencies */
 #include <iostream>
 #include <cmath>
 
 #include "roomba.hh"
-
+#include "roombaException.hh"
 #include "delay.hh"
 
 /* Associate the namespace */
