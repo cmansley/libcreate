@@ -11,7 +11,7 @@ set(LIBS ${LIBS} ${PTHREADS_LIBRARY})
 include_directories(${PTHREADS_INCLUDE_DIR})
 
 # Include the sources 
-set(srcs src/roomba.cc src/roombaMonitor.cc src/roombaSensor.cc)
+set(srcs src/roomba.cc src/roombaMonitor.cc src/roombaSensor.cc src/robot.cc)
 
 # conditionally include windows sources
 if (WIN32)

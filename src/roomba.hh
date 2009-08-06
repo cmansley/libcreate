@@ -10,6 +10,8 @@
 /* Definition dependencies */
 #include <string>
 
+#include "robot.hh"
+
 #include "dll.hh"
 
 #include "serial.hh"
@@ -24,18 +26,18 @@ namespace RoombaDriver {
    *
    * Class Description
    */
-  class DLL_EXPORT Roomba
+  class Roomba : public Robot
   {
   public:
     
     /** Constructor */
-    Roomba( const std::string path );
+    Roomba( );
 
     /** Destructor */
     ~Roomba( );
 
     /** Initialize the Roomba */
-    void Initialize( );
+    void Initialize( const std::string path );
 
     /** Uninitialize the Roomba */
     void Uninitialize( );

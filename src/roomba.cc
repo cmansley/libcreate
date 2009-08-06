@@ -13,8 +13,7 @@ namespace RoombaDriver {
   /*!
    *
    */
-  Roomba::Roomba(const std::string path): _roombaPath(path),					  
-					  _roombaInitialized(false)
+  Roomba::Roomba(): _roombaInitialized(false)
   {
     /* Create serial */
     _serial = new Serial();
@@ -50,7 +49,10 @@ namespace RoombaDriver {
    *
    *
    */
-  void Roomba::Initialize( ) {
+  void Roomba::Initialize( const std::string path ) {
+
+    /* Copy over serial path */
+    _roombaPath = path;
   
     try {
       /* Initialize serial connection */
@@ -74,6 +76,7 @@ namespace RoombaDriver {
     } //try
     
     catch(...) {
+      std::cerr << "Roomba::Initialize: Unknown exception" << std::endl;
       throw;
     }
       
@@ -115,7 +118,7 @@ namespace RoombaDriver {
     /* Handle unknown exceptions */
     catch(...) {
       std::cerr << "Roomba::Uninitialize: Unknown exception" << std::endl;
-      // throw; // throw ????
+      throw;
     }
 
     /* Roomba unintialized */
@@ -150,7 +153,7 @@ namespace RoombaDriver {
     /* Handle unknown exceptions */
     catch(...) {
       std::cerr << "Roomba::_setupConnection: Unknown exception" << std::endl;
-      // throw; // throw ???
+      throw;
     }
 
   }
@@ -191,7 +194,7 @@ namespace RoombaDriver {
     /* Catch unknown exceptions */
     catch(...) {
       std::cerr << "Roomba::_setSerialBaud: Unknown Exception" << std::endl;
-      // throw; // throw ????
+      throw;
     }
   }
 
