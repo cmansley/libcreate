@@ -313,8 +313,8 @@ namespace RoombaDriver {
     /* Reset internal model */
     _sensor->Reset();
 
-    /* Drive forward at 300 mm/s */
-    RDrive(300, _STRAIGHT);
+    /* Drive forward at 200 mm/s */
+    RDrive(200, _STRAIGHT);
 
     /* Block waiting for roomba to complete task */
     for(;;) {
