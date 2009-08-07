@@ -18,14 +18,13 @@ int main(int argc, char* argv[])
   /*
    * Initialize the roomba
    */
-  roomba->Initialize("/dev/ttyUSB0");
+  roomba->Initialize("COM1");
 
   /*
    * Run test program
    */
-  roomba->Drive(500);
+  roomba->Drive(610);
   roomba->Rotate(90);
-  roomba->Drive(300);
   roomba->Rotate(-90);
 
   /*
