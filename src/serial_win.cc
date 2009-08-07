@@ -33,12 +33,7 @@ namespace RoombaDriver {
 			0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
   
     /* Check error status */
-    if(_portH == INVALID_HANDLE_VALUE){
-    
-      //if(GetLastError()==ERROR_FILE_NOT_FOUND){
-      //serial port does not exist. Inform user.
-      //}
-
+    if(_portH == INVALID_HANDLE_VALUE){    
       throw RoombaIOException("Serial::Open: Unable to open serial port");    
     }
 
@@ -167,23 +162,6 @@ namespace RoombaDriver {
     if(!SetCommTimeouts(_portH, &timeouts)){
       throw RoombaIOException("Serial::_setTimeout: SetCommTimeout() failed");
     }
-  }
-
-
-  /*!
-   *
-   */
-  void _getError() {
-    char lastError[1024];
-  
-    FormatMessage(
-		  FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-		  NULL,
-		  GetLastError(),
-		  MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		  lastError,
-		  1024,
-		  NULL);
   }
 
 }

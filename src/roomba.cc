@@ -310,6 +310,10 @@ namespace RoombaDriver {
    */
   void Roomba::Drive(float distance) {
 
+    /* English units :( */
+    /* 1 foot = 304.8 mm */
+    distance = distance * 304.8;
+
     /* Reset internal model */
     _sensor->Reset();
 
