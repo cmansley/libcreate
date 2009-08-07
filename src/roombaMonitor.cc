@@ -141,7 +141,8 @@ namespace RoombaDriver {
     char *buffer = rawBuffer;
     int csum = 0;
 
-    /* FIXME: Add timeout counter for three failed serial timeouts */
+    /* Number of timeouts */
+    int timeout = 0;
 
     /* Grab first bytes */
     while(total_bytes < 2) {
@@ -159,16 +160,35 @@ namespace RoombaDriver {
 	  buffer[1] = buffer[2];
 	  total_bytes -= 1;
 	}
+
+      } else {
+	/* Timeout has occured */
+	timeout++; 
+	if(timeout > 3) {
+	  return 0;
+	}
       }
     }
 
     /* Second byte tells how many more bytes to read plus one for checksum*/
     req_bytes = buffer[1] + 1;
 
+    /* Reset timeout */
+    timeout = 0;
+
+    /* Grab final bytes */
     while(req_bytes > 0) {
 
       /* Grab bytes */
       num_bytes = _serial->Read(buffer+total_bytes, req_bytes);
+
+      /* Perform timeout handling */
+      if(num_bytes == 0) {
+	timeout++; 
+	if (timeout > 3) {
+	  return 0;
+	}
+      }
 
       /* Keep stats */
       total_bytes += num_bytes;
