@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
   /*
    * Run test program
    */
-  roomba->Drive(610);
+  roomba->Drive(2);
   roomba->Rotate(90);
   roomba->Rotate(-90);
 
