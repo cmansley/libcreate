@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #include "delay.hh"
 
@@ -211,6 +212,42 @@ namespace RoombaDriver {
   /*!
    *
    */
+  void RoombaMonitor::_writePackets() {
+
+    /* TODO: Have an actual queue */
+
+    /* Check pending write */
+    if(_writeRequest) {
+      _serial->Write(_writeBuffer, _writeBytes);
+      _writeRequest = false;
+    }
+
+  }
+
+  /*!
+   *
+   */
+  void RoombaMonitor::WriteRequest(void *buffer, unsigned int num) {
+
+    /* TODO: Add buffer overflow check */
+
+    /* Secure thread variables */
+    _getThreadMutex();
+
+    /* Move new write request in */
+    _writeBytes = num;
+    memcpy(_writeBuffer, buffer, num);
+    _writeRequest = true;
+
+    /* Release thread variables */
+    _releaseThreadMutex();
+    
+  }
+
+
+  /*!
+   *
+   */
   void* RoombaMonitor::_monitorThread(void* thread_arg) {
 
     RoombaMonitor* monitor = (RoombaMonitor*) thread_arg;
@@ -235,6 +272,9 @@ namespace RoombaDriver {
 	  
 	/* Secure thread variables */
 	monitor->_getThreadMutex();
+
+	/* Process write requests */
+	monitor->_writePackets();
 	
 	/* Check stoppage */
 	if(!monitor->_continueRunning) {

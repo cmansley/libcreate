@@ -244,10 +244,8 @@ namespace RoombaDriver {
     message[1] = 0;
 
     /* Write message */
-    _serial->Write(&message, 2);
+    _monitor->WriteRequest(&message, 2);
 
-    /* Recommended sleep time */
-    delay(20);
   }
 
   /*!
@@ -264,11 +262,9 @@ namespace RoombaDriver {
     message[3] = (radius >> 8) & 255;
     message[4] = radius & 255;
 
-    /* Write message */
-    _serial->Write(&message, 5);
+    /* Request message write */
+    _monitor->WriteRequest(&message, 5);
 
-    /* Recommended sleep time */
-    delay(20);
   }
 
   /*!

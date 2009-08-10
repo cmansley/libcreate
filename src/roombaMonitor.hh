@@ -43,6 +43,9 @@ namespace RoombaDriver {
     /** Grab current sensor object */
     void GrabCurrentSensor(RoombaSensor* sensor);
 
+    /** Request write from monitor */
+    void WriteRequest(void *buffer, unsigned int num);
+
   private:
 
     /** Thread structure */
@@ -56,6 +59,11 @@ namespace RoombaDriver {
 
     /** Thread running status */
     bool _continueRunning;
+
+    /** Write request data */
+    bool _writeRequest;
+    unsigned int _writeBytes;
+    char _writeBuffer[255];
 
     /** Serial object pointer */
     Serial* _serial;
@@ -77,7 +85,10 @@ namespace RoombaDriver {
 
     /** Read sensor packet */
     int _readPacket(char *buffer);
-    
+
+    /** Write packets */
+    void _writePackets();
+
     /** Monitor thread */
     static void* _monitorThread(void* thread_id);
   };
