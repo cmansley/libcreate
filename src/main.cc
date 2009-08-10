@@ -18,7 +18,12 @@ int main(int argc, char* argv[])
   /*
    * Initialize the roomba
    */
+#if defined (WIN32)
   roomba->Initialize("COM1");
+#else
+  roomba->Initialize("/dev/ttyUSB0");
+#endif
+    
 
   /*
    * Run test program
