@@ -30,19 +30,11 @@ namespace RoombaDriver {
    */
   Roomba::~Roomba() {
     
-    try {
-      /* Stop serial connection gracefully */
-      _teardownConnection();
+    /* Free up dynamic memory*/
+    delete _serial;
+    delete _monitor;
+    delete _sensor;
 
-      /* Free up dynamic memory*/
-      delete _serial;
-      delete _monitor;
-      delete _sensor;
-    }
-
-    catch(...) {
-      std::cerr << "Roomba::~Roomba: Unknown exception" << std::endl;
-    }
   }
 
   /*!
