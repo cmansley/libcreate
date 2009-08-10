@@ -244,9 +244,6 @@ namespace RoombaDriver {
 
 	/* Release thread variables */
 	monitor->_releaseThreadMutex();
-
-	/* Wait it out */
-	delay(10);
       }
     }
 

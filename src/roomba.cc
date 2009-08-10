@@ -337,8 +337,6 @@ namespace RoombaDriver {
 	}	
       }
 
-      /* Wait it out */
-      delay(20);
     }
 
     /* Stop moving */
@@ -385,8 +383,6 @@ namespace RoombaDriver {
 	}	
       }
 
-      /* Wait it out */
-      delay(20);
     }
 
     /* Stop moving */
