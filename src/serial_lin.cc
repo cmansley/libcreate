@@ -50,14 +50,11 @@ namespace RoombaDriver {
    */
   void Serial::Flush() throw( RoombaIOException ) {
     
-    // thread safety
-  
     /* Flush the serial port */
     if (tcflush(_portFD, TCIOFLUSH) != 0) {
       throw RoombaIOException("Serial::Flush: tcflush() failed");
     }
-  
-    // thread safety 
+
   }
 
   /*!
@@ -137,14 +134,11 @@ namespace RoombaDriver {
     cfsetispeed(&term,baud);
     cfsetospeed(&term,baud);
     
-    // thread safety 
-    
     /* Set the serial settings */
     if(tcsetattr(_portFD, TCSAFLUSH, &term) < 0 ) {
       throw RoombaIOException("Serial::SetBaud: tcsetattr() failed");
     }
 
-    // thread safety
   }
 
 } // namespace RoombaDriver
