@@ -74,9 +74,6 @@ namespace RoombaDriver {
     /** Closes serial communication */
     void _teardownConnection();
 
-    /** Flush serial buffer */
-    void _flushSerialBuffer();
-
     /** Send start command */
     void _setRoombaStart();
 

@@ -102,7 +102,7 @@ namespace RoombaDriver {
       _setRoombaStart();
 
       /* Flush remaining */
-      _flushSerialBuffer();
+      _serial->Flush();
 
       /* Attempt to deactivate connection */ 
       _teardownConnection();
@@ -140,7 +140,7 @@ namespace RoombaDriver {
       _serial->SetBaud(Serial::RBAUD_56K);
 
       /* Flush any existing data */
-      _flushSerialBuffer();
+      _serial->Flush();
       
     } // try
 
@@ -172,32 +172,6 @@ namespace RoombaDriver {
     /* Close serial port */
     _serial->Close();
   }
-
-  /*!
-   *
-   */
-  void Roomba::_flushSerialBuffer() {
-    
-    try {
-      
-      /* Flush buffer */
-      _serial->Flush();
-
-    } // try
-    
-    /* Catch I/O exceptions */
-    catch(RoombaIOException &e) {
-      std::cerr << e.what() << std::endl;
-      throw;
-    }
-
-    /* Catch unknown exceptions */
-    catch(...) {
-      std::cerr << "Roomba::_setSerialBaud: Unknown Exception" << std::endl;
-      throw;
-    }
-  }
-
 
   /*!
    *
