@@ -66,7 +66,14 @@ namespace RoombaDriver {
       _startRoombaStream();
 
     } //try
+
+    /* Grab roomba thread exceptions */
+    catch(RoombaThreadException &e) {
+      std::cerr << e.what() << std::endl;
+      throw;
+    }
     
+    /* Handle unknown exceptions */
     catch(...) {
       std::cerr << "Roomba::Initialize: Unknown exception" << std::endl;
       throw;
@@ -100,7 +107,13 @@ namespace RoombaDriver {
       _teardownConnection();
 
     } // try
-      
+
+    /* Grab roomba thread exceptions */
+    catch(RoombaThreadException &e) {
+      std::cerr << e.what() << std::endl;
+      throw;
+    }
+ 
     /* Handle I/O exception */
     catch(RoombaIOException &e) {
       std::cerr << e.what() << std::endl;

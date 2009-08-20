@@ -32,10 +32,12 @@ namespace RoombaDriver {
 
     /* Initialize mutex structure */
     if(pthread_mutex_init(&_threadMutex, NULL) != 0) {
+      throw RoombaThreadException("RoombaMonitor::StartMonitor: pthread_mutex_init() failed");    
     }
 
     /* Initialize mutex structure */
     if(pthread_mutex_init(&_sensorMutex, NULL) != 0) {
+      throw RoombaThreadException("RoombaMonitor::StartMonitor: pthread_mutex_init() failed");    
     }
 
     /* Signal thread to run */
@@ -43,6 +45,7 @@ namespace RoombaDriver {
 
     /* Start sensor thread */
     if(pthread_create(&_threadID, NULL, RoombaMonitor::_monitorThread, this) != 0) {
+      throw RoombaThreadException("RoombaMonitor::StartMonitor: pthread_create() failed");    
     }
 
   }
@@ -63,14 +66,17 @@ namespace RoombaDriver {
     
     /* Wait for sensor thread to close */
     if(pthread_join(_threadID, NULL) != 0) {
+      throw RoombaThreadException("RoombaMonitor::StopMonitor: pthread_join() failed");    
     }
 
     /* Destroy mutex */
     if(pthread_mutex_destroy(&_threadMutex) != 0) {
+      throw RoombaThreadException("RoombaMonitor::StopMonitor: pthread_mutex_destroy() failed");    
     }
 
     /* Destroy mutex */
     if(pthread_mutex_destroy(&_sensorMutex) != 0) {
+      throw RoombaThreadException("RoombaMonitor::StopMonitor: pthread_mutex_destroy() failed");    
     }
   }
 
@@ -98,6 +104,7 @@ namespace RoombaDriver {
     
     /* Lock thread data mutex */
     if(pthread_mutex_lock(&_sensorMutex) != 0) {
+      throw RoombaThreadException("RoombaMonitor::_getSensorMutex: pthread_mutex_lock() failed");    
     }
   }
 
@@ -108,6 +115,7 @@ namespace RoombaDriver {
 
     /* Release thread data mutex */
     if(pthread_mutex_unlock(&_sensorMutex) != 0) {
+      throw RoombaThreadException("RoombaMonitor::_releaseSensorMutex: pthread_mutex_unlock() failed");    
     }
   }
 
@@ -118,6 +126,7 @@ namespace RoombaDriver {
     
     /* Lock thread data mutex */
     if(pthread_mutex_lock(&_threadMutex) != 0) {
+      throw RoombaThreadException("RoombaMonitor::_getThreadMutex: pthread_mutex_lock() failed");    
     }
   }
 
@@ -128,6 +137,7 @@ namespace RoombaDriver {
 
     /* Release thread data mutex */
     if(pthread_mutex_unlock(&_threadMutex) != 0) {
+      throw RoombaThreadException("RoombaMonitor::_releaseThreadMutex: pthread_mutex_unlock() failed");    
     }
   }
 
@@ -289,6 +299,12 @@ namespace RoombaDriver {
 
     /* Grab roomba IO exceptions */
     catch(RoombaIOException &e) {
+      std::cerr << e.what() << std::endl;
+      throw;
+    }
+
+    /* Grab roomba thread exceptions */
+    catch(RoombaThreadException &e) {
       std::cerr << e.what() << std::endl;
       throw;
     }

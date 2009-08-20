@@ -76,6 +76,36 @@ namespace RoombaDriver {
     
   };
 
+  /**
+   * \class RoombaThreadException
+   * \brief Thrown instance when any threading fails. This includes
+   *        thread creation and deletion, mutex locking and thread
+   *        joins
+   */
+  class RoombaThreadException : public RoombaException {
+
+  public:
+
+    /**
+     * \brief Constructor
+     */
+    RoombaThreadException() :
+      RoombaException("ERROR: Thread exception") { }
+
+    /**
+     * \brief Constructor
+     * \param detailedString A more detailed description
+     */
+    RoombaThreadException( const std::string detailedString ) :
+      RoombaException("ERROR: Thread exception - ",detailedString) { }
+    
+    /**
+     * \brief Destructor
+     */
+    ~RoombaThreadException() throw() { }
+    
+  };
+
 } // namespace Roomba
 
 #endif // ROOMBA_EXCEPTION_HH
