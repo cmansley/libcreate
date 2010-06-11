@@ -13,7 +13,7 @@
  * same file for library compiling and executable compiling
  */
 #if defined (_WIN32) 
-  #if defined(libcreate_EXPORTS)
+  #if defined(roomba_EXPORTS)
     #define  DLL_EXPORT __declspec(dllexport)
   #else
     #define  DLL_EXPORT __declspec(dllimport)
